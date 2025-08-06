@@ -13,5 +13,5 @@ public interface IBaseService<TEntity, TRepository, TResponseDto, TDto>
 {
     ValueTask<Result<TResponseDto>> AddAsync(TDto dto);
     ValueTask<Result<TResponseDto>> UpdateAsync(TDto dto);
-    ValueTask<Result<TDto>> FindByIdAsync(long id);
+    ValueTask<Result<TDto>> FindByIdAsync(Guid id);
 }
