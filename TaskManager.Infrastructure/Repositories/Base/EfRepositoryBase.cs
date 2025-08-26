@@ -14,7 +14,7 @@ public class EfRepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity 
         _dbSet = context.Set<TEntity>();
         _context = context;
     }
-    public async ValueTask<TEntity> AddAsync(TEntity entity)
+    public async Task<TEntity> AddAsync(TEntity entity)
     {
         entity.CreatedAt = DateTime.UtcNow;
 
@@ -25,12 +25,12 @@ public class EfRepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity 
         return entity;
     }
 
-    public async ValueTask<TEntity> FindByIdAsync(Guid Id)
+    public async Task<TEntity> FindByIdAsync(Guid Id)
     {
         return await _dbSet.FirstAsync(x => x.Id == Id);
     }
 
-    public async ValueTask<TEntity> UpdateAsync(TEntity entity)
+    public async Task<TEntity> UpdateAsync(TEntity entity)
     {
         var updatedEntity = _dbSet.Update(entity);
         await _context.SaveChangesAsync();

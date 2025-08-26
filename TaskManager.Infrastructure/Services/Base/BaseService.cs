@@ -21,7 +21,7 @@ public class BaseService<TEntity, TRepository, TResponseDto, TDto> : IBaseServic
         _repositoryBase = repositoryBase;
     }
 
-    public async ValueTask<Result<TResponseDto>> AddAsync(TDto dto)
+    public async Task<Result<TResponseDto>> AddAsync(TDto dto)
     {
         var entity = dto.Adapt<TEntity>();
 
@@ -35,7 +35,7 @@ public class BaseService<TEntity, TRepository, TResponseDto, TDto> : IBaseServic
         return addedEntity.Adapt<TResponseDto>();
     }
 
-    public async ValueTask<Result<TDto>> FindByIdAsync(Guid id)
+    public async Task<Result<TDto>> FindByIdAsync(Guid id)
     {
         var entity = await _repositoryBase.FindByIdAsync(id);
 
@@ -47,7 +47,7 @@ public class BaseService<TEntity, TRepository, TResponseDto, TDto> : IBaseServic
         return entity.Adapt<TDto>();
     }
 
-    public async ValueTask<Result<TResponseDto>> UpdateAsync(TDto dto)
+    public async Task<Result<TResponseDto>> UpdateAsync(TDto dto)
     {
         var entity = dto.Adapt<TEntity>();
 

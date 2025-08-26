@@ -4,7 +4,7 @@ namespace TaskManager.Application.Interfaces.Repositories.Base;
 
 public interface IRepositoryBase<TEntity> where TEntity : BaseEntity
 {
-    ValueTask<TEntity> AddAsync(TEntity entity);
-    ValueTask<TEntity> UpdateAsync(TEntity entity);
-    ValueTask<TEntity> FindByIdAsync(Guid Id);
+    Task<TEntity> AddAsync(TEntity entity);
+    Task<TEntity> UpdateAsync(TEntity entity);
+    Task<TEntity> FindByIdAsync(Guid Id);
 }

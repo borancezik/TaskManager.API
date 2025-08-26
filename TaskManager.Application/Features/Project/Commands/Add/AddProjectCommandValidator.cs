@@ -1,12 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
+using TaskManager.Application.Utilities.Errors.ValidationErrors;
 
-namespace TaskManager.Application.Features.Project.Commands.Add
+namespace TaskManager.Application.Features.Project.Commands.Add;
+
+internal class AddProjectCommandValidator : AbstractValidator<AddProjectCommand>
 {
-    internal class AddProjectCommandValidator
+    public AddProjectCommandValidator()
     {
+        RuleFor(x => x.Name)
+           .NotEmpty()
+           .WithErrorCode(ProjectValidationError.ProjectNameRequired)
+           .MaximumLength(100)
+           .WithErrorCode(ProjectValidationError.ProjectNameTooLong);
+
+        RuleFor(x => x.StartDate)
+            .NotNull()
+            .WithErrorCode(ProjectValidationError.StartDateRequired);
+
+        RuleFor(x => x.EndDate)
+            .GreaterThan(x => x.StartDate)
+            .When(x => x.EndDate.HasValue && x.StartDate.HasValue)
+            .WithErrorCode(ProjectValidationError.EndDateGreaterThanStartDate);
     }
 }
