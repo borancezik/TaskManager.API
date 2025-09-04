@@ -9,7 +9,7 @@ internal sealed class UpdateProjectCommandValidator : AbstractValidator<UpdatePr
     {
         RuleFor(x => x.Id)
            .NotEmpty()
-           .WithErrorCode(ProjectValidationError.ProjectIdRequired);
+           .WithErrorCode(ProjectValidationError.IdRequired);
 
         RuleFor(x => x.Name)
           .NotEmpty()

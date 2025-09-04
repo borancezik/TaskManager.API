@@ -2,6 +2,7 @@
 
 public static class ProjectValidationError
 {
+    public const string IdRequired = "Id boş olamaz.";
     public const string ProjectNameRequired = "Proje adı zorunludur.";
     public const string ProjectIdRequired = "Proje id değeri zorunludur.";
     public const string ProjectNameTooLong = "Proje adı en fazla 100 karakter olabilir.";

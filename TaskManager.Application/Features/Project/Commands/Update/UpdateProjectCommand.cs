@@ -6,6 +6,7 @@ namespace TaskManager.Application.Features.Project.Commands.Update;
 public sealed class UpdateProjectCommand : IRequest<Result<UpdateProjectCommandResponse>>
 {
     public Guid Id { get; set; }
+
     public string Name { get; set; } = null!;
 
     public string? Description { get; set; }

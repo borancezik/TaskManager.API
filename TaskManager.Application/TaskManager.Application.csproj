@@ -20,9 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Task\Commands\Add\" />
-    <Folder Include="Features\Task\Commands\Update\" />
-    <Folder Include="Features\Task\Queries\FindById\" />
     <Folder Include="Features\TeamMember\Commands\Add\" />
     <Folder Include="Features\TeamMember\Commands\Update\" />
     <Folder Include="Features\TeamMember\Queries\FindById\" />
