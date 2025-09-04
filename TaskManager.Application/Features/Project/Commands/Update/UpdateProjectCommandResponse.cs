@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace TaskManager.Application.Features.Project.Commands.Update
 {
-    internal class UpdateProjectCommandResponse
+    public sealed class UpdateProjectCommandResponse
     {
     }
 }

@@ -3,7 +3,7 @@ using TaskManager.Application.Utilities.Errors.ValidationErrors;
 
 namespace TaskManager.Application.Features.Project.Commands.Add;
 
-internal class AddProjectCommandValidator : AbstractValidator<AddProjectCommand>
+internal sealed class AddProjectCommandValidator : AbstractValidator<AddProjectCommand>
 {
     public AddProjectCommandValidator()
     {

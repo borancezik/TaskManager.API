@@ -3,7 +3,7 @@ using TaskManager.Application.Utilities.Result;
 
 namespace TaskManager.Application.Features.Project.Commands.Add;
 
-internal sealed class AddProjectCommand : IRequest<Result<AddProjectCommandResponse>>
+public sealed class AddProjectCommand : IRequest<Result<AddProjectCommandResponse>>
 {
     public string Name { get; set; } = null!;
 

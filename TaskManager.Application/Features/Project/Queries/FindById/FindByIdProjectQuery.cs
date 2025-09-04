@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using TaskManager.Application.Utilities.Result;
 
-namespace TaskManager.Application.Features.Project.Queries.FindById
+namespace TaskManager.Application.Features.Project.Queries.FindById;
+
+public sealed class FindByIdProjectQuery : IRequest<Result<FindByIdProjectQueryResponse>>
 {
-    internal class FindByIdProjectQuery
-    {
-    }
+    public Guid Id { get; set; }
 }
