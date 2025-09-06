@@ -1,8 +1,12 @@
 using Scalar.AspNetCore;
+using TaskManager.Application;
+using TaskManager.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
+builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -23,8 +27,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
-app.MapDefaultEndpoints();
 
 app.MapControllers();
 

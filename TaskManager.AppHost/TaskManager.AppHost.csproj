@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskManager.Presentation\TaskManager.Presentation.csproj" />
-    <ProjectReference Include="..\TaskManager.ServiceDefaults\TaskManager.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>
