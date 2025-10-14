@@ -1,5 +1,5 @@
 ﻿using TaskManager.Application.Dtos.TeamMember;
-using TaskManager.Application.Interfaces.Repositories;
+using TaskManager.Application.Interfaces.Persistence.Repositories;
 using TaskManager.Application.Interfaces.Services.Base;
 using TaskManager.Domain.Entities;
 

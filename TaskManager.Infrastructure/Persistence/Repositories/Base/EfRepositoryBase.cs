@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskManager.Application.Interfaces.Repositories.Base;
+using TaskManager.Application.Interfaces.Persistence.Repositories.Base;
 using TaskManager.Domain.Entities.Base;
-using TaskManager.Infrastructure.Context;
+using TaskManager.Infrastructure.Persistence.Context;
 
-namespace TaskManager.Infrastructure.Repositories.Base;
+namespace TaskManager.Infrastructure.Persistence.Repositories.Base;
 
 public class EfRepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : BaseEntity
 {

@@ -1,6 +1,6 @@
 ﻿using TaskManager.Domain.Entities.Base;
 
-namespace TaskManager.Application.Interfaces.Repositories.Base;
+namespace TaskManager.Application.Interfaces.Persistence.Repositories.Base;
 
 public interface IRepositoryBase<TEntity> where TEntity : BaseEntity
 {

@@ -1,6 +1,6 @@
 ﻿using Mapster;
 using TaskManager.Application.Dtos.Base;
-using TaskManager.Application.Interfaces.Repositories.Base;
+using TaskManager.Application.Interfaces.Persistence.Repositories.Base;
 using TaskManager.Application.Interfaces.Services.Base;
 using TaskManager.Application.Utilities.Errors.Base;
 using TaskManager.Application.Utilities.Result;

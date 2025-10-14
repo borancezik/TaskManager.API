@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskManager.Application.Interfaces.Context;
+using TaskManager.Application.Interfaces.Persistence.Context;
 using TaskManager.Domain.Entities;
 
-namespace TaskManager.Infrastructure.Context;
+namespace TaskManager.Infrastructure.Persistence.Context;
 
 public class TaskManagerContext : DbContext, ITaskManagerContext
 {

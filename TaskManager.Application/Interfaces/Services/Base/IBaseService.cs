@@ -1,5 +1,5 @@
 ﻿using TaskManager.Application.Dtos.Base;
-using TaskManager.Application.Interfaces.Repositories.Base;
+using TaskManager.Application.Interfaces.Persistence.Repositories.Base;
 using TaskManager.Application.Utilities.Result;
 using TaskManager.Domain.Entities.Base;
 
