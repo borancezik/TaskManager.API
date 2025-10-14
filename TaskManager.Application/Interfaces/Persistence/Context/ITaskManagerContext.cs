@@ -7,5 +7,5 @@ public interface ITaskManagerContext
 {
     public DbSet<ProjectEntity> Projects { get; set; }
     public DbSet<TaskEntity> Tasks { get; set; }
-    public DbSet<TeamMemberEntity> TeamMembers { get; set; }
+    public DbSet<UserEntity> Users { get; set; }
 }

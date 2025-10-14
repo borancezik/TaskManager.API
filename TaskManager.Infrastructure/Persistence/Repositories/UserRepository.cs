@@ -5,9 +5,9 @@ using TaskManager.Infrastructure.Persistence.Repositories.Base;
 
 namespace TaskManager.Infrastructure.Persistence.Repositories;
 
-public class TeamMemberRepository : EfRepositoryBase<TeamMemberEntity>, ITeamMemberRepository
+public class UserRepository : EfRepositoryBase<UserEntity>, IUserRepository
 {
-    public TeamMemberRepository(TaskManagerContext context) : base(context)
+    public UserRepository(TaskManagerContext context) : base(context)
     {
     }
 }

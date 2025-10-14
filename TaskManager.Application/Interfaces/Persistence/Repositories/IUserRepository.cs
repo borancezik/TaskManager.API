@@ -3,4 +3,4 @@ using TaskManager.Domain.Entities;
 
 namespace TaskManager.Application.Interfaces.Persistence.Repositories;
 
-public interface ITeamMemberRepository : IRepositoryBase<TeamMemberEntity>;
+public interface IUserRepository : IRepositoryBase<UserEntity>;

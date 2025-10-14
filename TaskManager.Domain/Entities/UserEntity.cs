@@ -4,7 +4,7 @@ using TaskManager.Domain.Entities.Base;
 namespace TaskManager.Domain.Entities;
 
 [Table("team_members", Schema = "task_manager")]
-public class TeamMemberEntity : BaseEntity
+public class UserEntity : BaseEntity
 {
     [Column("name")]
     public string Name { get; set; } = null!;

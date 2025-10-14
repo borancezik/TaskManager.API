@@ -1,6 +1,6 @@
 ﻿namespace TaskManager.Application.Utilities.Errors.ValidationErrors;
 
-public static class TeamMemberValidationError
+public static class UserValidationError
 {
     public const string IdRequired = "Id boş olamaz.";
     public const string NameRequired = "Name is required.";

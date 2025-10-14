@@ -1,9 +1,8 @@
-﻿using TaskManager.Application.Dtos.Base;
+﻿namespace TaskManager.Application.Features.User.Queries.FindById;
 
-namespace TaskManager.Application.Dtos.TeamMember;
-
-public class TeamMemberDto : BaseDto
+public sealed class FindByIdUserQueryResponse
 {
+    public Guid Id { get; set; }
     public string Name { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string? Role { get; set; }

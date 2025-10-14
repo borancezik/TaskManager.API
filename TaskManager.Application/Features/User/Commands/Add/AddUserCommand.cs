@@ -1,11 +1,10 @@
 ﻿using MediatR;
 using TaskManager.Application.Utilities.Result;
 
-namespace TaskManager.Application.Features.TeamMember.Commands.Update;
+namespace TaskManager.Application.Features.User.Commands.Add;
 
-public sealed class UpdateTeamMemberCommand : IRequest<Result<UpdateTeamMemberCommandResponse>>
+public sealed class AddUserCommand : IRequest<Result<AddUserCommandResponse>>
 {
-    public Guid Id { get; set; }
     public string Name { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string? Role { get; set; }
