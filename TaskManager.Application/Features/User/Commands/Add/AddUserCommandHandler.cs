@@ -15,7 +15,10 @@ internal sealed class AddUserCommandHandler(IUserService userService) : IRequest
         {
             Name = request.Name,
             Email = request.Email,
-            Role = request.Role,
+            Username = request.Username,
+            PasswordHash = request.PasswordHash,
+            PasswordSalt = request.PasswordSalt,
+            Iterations = request.Iterations,
             JoinedAt = request.JoinedAt
         };
 

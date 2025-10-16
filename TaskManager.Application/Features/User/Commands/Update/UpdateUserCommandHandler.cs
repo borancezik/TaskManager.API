@@ -19,7 +19,10 @@ internal sealed class UpdateUserCommandHandler(IUserService userService) : IRequ
         
         user.Name = request.Name;
         user.Email = request.Email;
-        user.Role = request.Role;
+        user.Username = request.Username;
+        user.PasswordHash = request.PasswordHash;
+        user.PasswordSalt = request.PasswordSalt;
+        user.Iterations = request.Iterations;
         user.JoinedAt = request.JoinedAt;
 
         var updateduser = await _userService.UpdateAsync(user);

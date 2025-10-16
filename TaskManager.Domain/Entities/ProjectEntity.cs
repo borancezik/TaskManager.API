@@ -3,7 +3,7 @@ using TaskManager.Domain.Entities.Base;
 
 namespace TaskManager.Domain.Entities;
 
-[Table("projects", Schema = "task_manager")]
+[Table("project", Schema = "task_manager")]
 public class ProjectEntity : BaseEntity
 {
     [Column("name")]
