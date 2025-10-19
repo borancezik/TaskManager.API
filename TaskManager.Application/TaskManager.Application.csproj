@@ -21,6 +21,11 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Features\Authentication\Login\" />
+    <Folder Include="Features\Authentication\ForgotPassword\" />
+    <Folder Include="Features\Authentication\ChangePassword\" />
+    <Folder Include="Features\Authentication\CheckRefreshToken\" />
+    <Folder Include="Features\Authentication\Logout\" />
   </ItemGroup>
 
 </Project>
