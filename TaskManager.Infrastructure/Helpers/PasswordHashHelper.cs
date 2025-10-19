@@ -6,48 +6,64 @@ namespace TaskManager.Infrastructure.Helpers;
 
 public class PasswordHashHelper : IPasswordHashHelper
 {
-    private const int SaltSize = 16; // 128 bit salt
-    private const int HashSize = 32; // 256 bit SHA3_256 output
+    private const int SaltSize = 16;   // 128 bit salt
+    private const int HashSize = 32;   // 256 bit SHA3_256 output
+    private const int MinIterations = 50_000;
+    private const int MaxIterations = 150_000; // inclusive upper bound handled below
 
-    public (string Hash, string Salt) CreateHash(string password)
+    /// <summary>
+    /// Yeni salt üretir, rastgele iterations seçer (50k..150k) ve hash oluşturur.
+    /// Dönen tuple: (HashHex, SaltHex, Iterations)
+    /// </summary>
+    public (string Hash, string Salt, int Iterations) CreateHash(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
             throw new ArgumentException("Password cannot be empty.", nameof(password));
 
-        // 1️⃣ Rastgele salt üret
         var saltBytes = RandomNumberGenerator.GetBytes(SaltSize);
 
-        // 2️⃣ Hash hesapla (password + salt)
-        var hashBytes = ComputeSha3Hash(password, saltBytes);
+        int iterations = RandomNumberGenerator.GetInt32(MinIterations, MaxIterations + 1);
 
-        // 3️⃣ String olarak döndür
-        var hashString = Convert.ToHexString(hashBytes);
-        var saltString = Convert.ToHexString(saltBytes);
+        var hashBytes = ComputeSha3Hash(password, saltBytes, iterations);
 
-        return (hashString, saltString);
+        return (
+            Hash: Convert.ToHexString(hashBytes),
+            Salt: Convert.ToHexString(saltBytes),
+            Iterations: iterations
+        );
     }
 
-    public bool Verify(string password, string storedHash, string storedSalt)
+    /// <summary>
+    /// Verilen password ile stored hash'i iterations kullanarak doğrular.
+    /// </summary>
+    public bool VerifyPassword(string password, string storedHash, string storedSalt, int storedIterations)
     {
         if (string.IsNullOrWhiteSpace(password))
             return false;
 
         var saltBytes = Convert.FromHexString(storedSalt);
-        var computedHash = ComputeSha3Hash(password, saltBytes);
+        var computedHash = ComputeSha3Hash(password, saltBytes, storedIterations);
         var storedHashBytes = Convert.FromHexString(storedHash);
 
-        // Sabit zamanlı karşılaştırma (timing attack koruması)
         return CryptographicOperations.FixedTimeEquals(computedHash, storedHashBytes);
     }
 
-    private static byte[] ComputeSha3Hash(string password, byte[] salt)
+    private static byte[] ComputeSha3Hash(string password, byte[] salt, int iterations)
     {
         using var sha3 = SHA3_256.Create();
 
-        var combinedBytes = new byte[Encoding.UTF8.GetByteCount(password) + salt.Length];
-        Encoding.UTF8.GetBytes(password, 0, password.Length, combinedBytes, 0);
-        Buffer.BlockCopy(salt, 0, combinedBytes, Encoding.UTF8.GetByteCount(password), salt.Length);
+        var passwordBytes = Encoding.UTF8.GetBytes(password);
+        var combined = new byte[passwordBytes.Length + salt.Length];
+        Buffer.BlockCopy(passwordBytes, 0, combined, 0, passwordBytes.Length);
+        Buffer.BlockCopy(salt, 0, combined, passwordBytes.Length, salt.Length);
 
-        return sha3.ComputeHash(combinedBytes);
+        var hash = sha3.ComputeHash(combined);
+
+        for (int i = 1; i < iterations; i++)
+        {
+            hash = sha3.ComputeHash(hash);
+        }
+
+        return hash;
     }
 }

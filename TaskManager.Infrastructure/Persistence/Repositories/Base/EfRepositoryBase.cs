@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TaskManager.Application.Interfaces.Persistence.Repositories.Base;
 using TaskManager.Domain.Entities.Base;
 using TaskManager.Infrastructure.Persistence.Context;
@@ -35,5 +36,10 @@ public class EfRepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity 
         var updatedEntity = _dbSet.Update(entity);
         await _context.SaveChangesAsync();
         return updatedEntity.Entity;
+    }
+
+    public async Task<TEntity> GetByExpressionAsync(Expression<Func<TEntity, bool>> expression)
+    {
+        return await _dbSet.FirstAsync(expression);
     }
 }

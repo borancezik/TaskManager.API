@@ -1,4 +1,5 @@
-﻿using TaskManager.Application.Dtos.Base;
+﻿using System.Linq.Expressions;
+using TaskManager.Application.Dtos.Base;
 using TaskManager.Application.Interfaces.Persistence.Repositories.Base;
 using TaskManager.Application.Utilities.Result;
 using TaskManager.Domain.Entities.Base;
@@ -14,4 +15,5 @@ public interface IBaseService<TEntity, TRepository, TResponseDto, TDto>
     Task<Result<TResponseDto>> AddAsync(TDto dto);
     Task<Result<TResponseDto>> UpdateAsync(TDto dto);
     Task<Result<TDto>> FindByIdAsync(Guid id);
+    Task<Result<TDto>> GetByExpressionAsync(Expression<Func<TEntity, bool>> expression);
 }

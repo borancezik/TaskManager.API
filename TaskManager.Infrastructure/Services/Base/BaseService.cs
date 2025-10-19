@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using System.Linq.Expressions;
 using TaskManager.Application.Dtos.Base;
 using TaskManager.Application.Interfaces.Persistence.Repositories.Base;
 using TaskManager.Application.Interfaces.Services.Base;
@@ -59,5 +60,17 @@ public class BaseService<TEntity, TRepository, TResponseDto, TDto> : IBaseServic
         }
 
         return updatedEntity.Adapt<TResponseDto>();
+    }
+
+    public async Task<Result<TDto>> GetByExpressionAsync(Expression<Func<TEntity, bool>> expression)
+    {
+        var entity = await _repositoryBase.GetByExpression(expression);
+
+        if (entity is null)
+        {
+            return Error.NotFound;
+        }
+
+        return entity.Adapt<TDto>();
     }
 }

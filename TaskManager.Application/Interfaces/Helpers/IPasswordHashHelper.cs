@@ -2,6 +2,6 @@
 
 public interface IPasswordHashHelper
 {
-    (string Hash, string Salt) CreateHash(string password);
-    bool Verify(string password, string storedHash, string storedSalt);
+    (string Hash, string Salt, int Iterations) CreateHash(string password);
+    bool VerifyPassword(string password, string storedHash, string storedSalt, int storedIterations);
 }

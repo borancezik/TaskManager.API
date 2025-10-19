@@ -6,6 +6,7 @@ public static class UserValidationError
     public const string NameRequired = "Name is required.";
     public const string NameTooLong = "Name must not exceed 100 characters.";
     public const string UserNameRequired = "UserName is required.";
+    public const string PasswordRequired = "Password is required.";
     public const string UserNameTooLong = "UserName must not exceed 100 characters.";
     public const string EmailRequired = "Email is required.";
     public const string EmailInvalid = "Email format is invalid.";

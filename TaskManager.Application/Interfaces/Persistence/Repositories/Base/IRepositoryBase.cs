@@ -1,4 +1,5 @@
-﻿using TaskManager.Domain.Entities.Base;
+﻿using System.Linq.Expressions;
+using TaskManager.Domain.Entities.Base;
 
 namespace TaskManager.Application.Interfaces.Persistence.Repositories.Base;
 
@@ -7,4 +8,5 @@ public interface IRepositoryBase<TEntity> where TEntity : BaseEntity
     Task<TEntity> AddAsync(TEntity entity);
     Task<TEntity> UpdateAsync(TEntity entity);
     Task<TEntity> FindByIdAsync(Guid Id);
+    Task<TEntity> GetByExpressionAsync(Expression<Func<TEntity, bool>> expression);
 }
