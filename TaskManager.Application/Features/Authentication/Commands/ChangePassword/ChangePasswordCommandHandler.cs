@@ -7,9 +7,10 @@ using TaskManager.Application.Utilities.Result;
 
 namespace TaskManager.Application.Features.Authentication.Commands.ChangePassword;
 
-internal sealed class ChangePasswordCommandHandler(IUserService userService, IPasswordHashHelper passwordHashHelper) : IRequestHandler<ChangePasswordCommand, Result<ChangePasswordCommandResponse>>
+internal sealed class ChangePasswordCommandHandler(IUserService userService, ISessionService sessionService, IPasswordHashHelper passwordHashHelper) : IRequestHandler<ChangePasswordCommand, Result<ChangePasswordCommandResponse>>
 {
     private readonly IUserService _userService = userService;
+    private readonly ISessionService _sessionService = sessionService;
     private readonly IPasswordHashHelper _passwordHashHelper = passwordHashHelper;
 
     public async Task<Result<ChangePasswordCommandResponse>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
@@ -37,6 +38,13 @@ internal sealed class ChangePasswordCommandHandler(IUserService userService, IPa
 
         if (updatedUser.IsSuccess is false)
             return Error.UpdatedError;
+
+        var currentSessionList = await _sessionService.GetListAsync(x => x.UserId == userDto.Id);
+
+        foreach (var currentSession in currentSessionList)
+        {
+            await _sessionService.DeleteByIdAsync(currentSession.Id.Value);
+        }
 
         return new ChangePasswordCommandResponse();
     }

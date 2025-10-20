@@ -29,9 +29,7 @@ public class BaseService<TEntity, TRepository, TResponseDto, TDto> : IBaseServic
         var addedEntity = await _repositoryBase.AddAsync(entity);
 
         if (addedEntity is null)
-        {
             return Error.AddedError;
-        }
 
         return addedEntity.Adapt<TResponseDto>();
     }
@@ -41,9 +39,7 @@ public class BaseService<TEntity, TRepository, TResponseDto, TDto> : IBaseServic
         var entity = await _repositoryBase.FindByIdAsync(id);
 
         if (entity is null)
-        {
             return Error.NotFound;
-        }
 
         return entity.Adapt<TDto>();
     }
@@ -55,22 +51,35 @@ public class BaseService<TEntity, TRepository, TResponseDto, TDto> : IBaseServic
         var updatedEntity = await _repositoryBase.UpdateAsync(entity);
 
         if (updatedEntity is null)
-        {
             return Error.UpdatedError;
-        }
 
         return updatedEntity.Adapt<TResponseDto>();
     }
 
     public async Task<Result<TDto>> GetByExpressionAsync(Expression<Func<TEntity, bool>> expression)
     {
-        var entity = await _repositoryBase.GetByExpression(expression);
+        var entity = await _repositoryBase.GetByExpressionAsync(expression);
 
         if (entity is null)
-        {
             return Error.NotFound;
-        }
 
         return entity.Adapt<TDto>();
+    }
+
+    public async Task<List<TDto>> GetListAsync(Expression<Func<TEntity, bool>> expression)
+    {
+        var entity = await _repositoryBase.GetListAsync(expression);
+
+        return entity.Adapt<List<TDto>>();
+    }
+
+    public async ValueTask<Result<bool>> DeleteByIdAsync(Guid id)
+    {
+        var deletedEntity = await _repositoryBase.DeleteByIdAsync(id);
+
+        if (!deletedEntity)
+            return Error.DeletedError;
+
+        return deletedEntity;
     }
 }

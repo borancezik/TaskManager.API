@@ -30,10 +30,12 @@ public static class DependencyContainer
         services.AddScoped<ITaskRepository, TaskRepository>();
         services.AddScoped<IProjectRepository, ProjectRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ISessionRepository, SessionRepository>();
 
         services.AddScoped<ITaskService, TaskService>();
         services.AddScoped<IProjectService, ProjectService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ISessionService, SessionService>();
 
         var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
