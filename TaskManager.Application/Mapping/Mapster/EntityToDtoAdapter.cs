@@ -6,6 +6,5 @@ public class EntityToDtoAdapter : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        throw new NotImplementedException();
     }
 }

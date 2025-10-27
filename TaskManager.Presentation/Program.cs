@@ -1,16 +1,21 @@
 using Scalar.AspNetCore;
 using TaskManager.Application;
 using TaskManager.Infrastructure;
+using TaskManager.Presentation.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
+builder.Services.AddExceptionHandler<CustomExceptionHandlerr>();
+
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+app.UseSession();
 
 if (app.Environment.IsDevelopment())
 {
@@ -26,7 +31,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseCustomAuthorizationMiddleware();
+
+app.UseExceptionHandler();
 
 app.MapControllers();
 

@@ -5,8 +5,11 @@ using System.Security.Claims;
 using System.Text;
 using TaskManager.Application.Interfaces.Helpers;
 using TaskManager.Application.Utilities.AppSettings;
+using TaskManager.Application.Utilities.Authorization.Model;
+using TaskManager.Application.Utilities.Constants;
+using TaskManager.Application.Utilities.Exceptions;
 
-namespace TaskManager.Infrastructure.Helpers;
+namespace TaskManager.Infrastructure.Helper;
 
 public class TokenHelper(IOptions<TaskManagerSettings> appSettings) : ITokenHelper
 {
@@ -38,5 +41,34 @@ public class TokenHelper(IOptions<TaskManagerSettings> appSettings) : ITokenHelp
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public TokenModel ValidateToken(string token)
+    {
+        try
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(token);
+
+            var personnel = new TokenModel
+            {
+                UserId = long.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "UserId").Value),
+                Username = jwtSecurityToken.Claims.First(claim => claim.Type == "UserName").Value,
+                ValidTo = Convert.ToDateTime(jwtSecurityToken.Claims.First(claim => claim.Type == "ValidTo").Value),
+                RefreshTokenEndDate = Convert.ToDateTime(jwtSecurityToken.Claims.First(claim => claim.Type == "RefreshTokenEndDate").Value),
+                RefreshToken = jwtSecurityToken.Claims.First(claim => claim.Type == "RefreshToken").Value,
+            };
+
+            if (personnel.ValidTo < DateTime.Now)
+            {
+                throw new UnauthorizedException(TokenConstant.EXPIRED_TOKEN);
+            }
+
+            return personnel;
+        }
+        catch
+        {
+            throw new UnauthorizedException(TokenConstant.INVALID_TOKEN);
+        }
     }
 }

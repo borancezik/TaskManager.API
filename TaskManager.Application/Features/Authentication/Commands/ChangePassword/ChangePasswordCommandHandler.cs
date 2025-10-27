@@ -10,8 +10,8 @@ namespace TaskManager.Application.Features.Authentication.Commands.ChangePasswor
 internal sealed class ChangePasswordCommandHandler(IUserService userService, ISessionService sessionService, IPasswordHashHelper passwordHashHelper) : IRequestHandler<ChangePasswordCommand, Result<ChangePasswordCommandResponse>>
 {
     private readonly IUserService _userService = userService;
-    private readonly ISessionService _sessionService = sessionService;
     private readonly IPasswordHashHelper _passwordHashHelper = passwordHashHelper;
+    private readonly ISessionService _sessionService = sessionService;
 
     public async Task<Result<ChangePasswordCommandResponse>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {

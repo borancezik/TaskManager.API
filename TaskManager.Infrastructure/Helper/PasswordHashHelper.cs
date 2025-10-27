@@ -2,7 +2,7 @@
 using System.Text;
 using TaskManager.Application.Interfaces.Helpers;
 
-namespace TaskManager.Infrastructure.Helpers;
+namespace TaskManager.Infrastructure.Helper;
 
 public class PasswordHashHelper : IPasswordHashHelper
 {
@@ -48,7 +48,7 @@ public class PasswordHashHelper : IPasswordHashHelper
         return CryptographicOperations.FixedTimeEquals(computedHash, storedHashBytes);
     }
 
-    private static byte[] ComputeSha3Hash(string password, byte[] salt, int iterations)
+    private byte[] ComputeSha3Hash(string password, byte[] salt, int iterations)
     {
         using var sha3 = SHA3_256.Create();
 
