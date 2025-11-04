@@ -26,7 +26,6 @@
   <ItemGroup>
     <Folder Include="Features\Authentication\Commands\ForgotPassword\" />
     <Folder Include="Features\Authentication\Commands\CheckRefreshToken\" />
-    <Folder Include="Features\Authentication\Commands\Logout\" />
   </ItemGroup>
 
 </Project>

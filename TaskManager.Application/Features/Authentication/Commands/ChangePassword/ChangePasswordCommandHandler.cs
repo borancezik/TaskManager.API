@@ -7,7 +7,10 @@ using TaskManager.Application.Utilities.Result;
 
 namespace TaskManager.Application.Features.Authentication.Commands.ChangePassword;
 
-internal sealed class ChangePasswordCommandHandler(IUserService userService, ISessionService sessionService, IPasswordHashHelper passwordHashHelper) : IRequestHandler<ChangePasswordCommand, Result<ChangePasswordCommandResponse>>
+internal sealed class ChangePasswordCommandHandler(
+    IUserService userService, 
+    ISessionService sessionService, 
+    IPasswordHashHelper passwordHashHelper) : IRequestHandler<ChangePasswordCommand, Result<ChangePasswordCommandResponse>>
 {
     private readonly IUserService _userService = userService;
     private readonly IPasswordHashHelper _passwordHashHelper = passwordHashHelper;

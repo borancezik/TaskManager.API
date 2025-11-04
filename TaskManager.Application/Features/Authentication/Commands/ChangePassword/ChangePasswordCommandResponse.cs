@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace TaskManager.Application.Features.Authentication.Commands.ChangePassword;
 
-namespace TaskManager.Application.Features.Authentication.Commands.ChangePassword
+public class ChangePasswordCommandResponse
 {
-    internal class ChangePasswordCommandResponse
-    {
-    }
 }

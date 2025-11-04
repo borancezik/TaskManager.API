@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Options;
-using TaskManager.Application.Utilities.AppSettings;
-using TaskManager.Application.Utilities.Authorization.Helper;
+using TaskManager.Application.Interfaces.Helpers;
 using TaskManager.Application.Utilities.Authorization.Model;
 using TaskManager.Application.Utilities.Authorization.Session;
 using TaskManager.Application.Utilities.Constants;
@@ -12,13 +10,12 @@ namespace TaskManager.Presentation.Middlewares;
 public class CustomAuthorizationMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly ITokenHelper _tokenHelper;
 
-    private readonly IOptions<TaskManagerSettings> _appSettings;
-
-    public CustomAuthorizationMiddleware(IOptions<TaskManagerSettings> appSettings, RequestDelegate next)
+    public CustomAuthorizationMiddleware(RequestDelegate next, ITokenHelper tokenHelper)
     {
-        _appSettings = appSettings;
         _next = next;
+        _tokenHelper = tokenHelper;
     }
 
     public async Task Invoke(HttpContext httpContext)
@@ -43,9 +40,7 @@ public class CustomAuthorizationMiddleware
 
                 try
                 {
-                    var tokenHelper = new TokenHelper(_appSettings);
-
-                    var tokenModel = tokenHelper.ValidateToken(token);
+                    var tokenModel = _tokenHelper.ValidateToken(token);
 
                     if (tokenModel is null)
                         throw new UnauthorizedException(TokenConstant.INVALID_TOKEN);

@@ -2,7 +2,7 @@
 
 namespace TaskManager.Application.Utilities.Errors.Base;
 
-public readonly record struct Error(string Key = null, string Message = null, object[] Args = null, ErrorType Type = ErrorType.SERVICE_ERROR)
+public readonly record struct Error(string? Key = null, string? Message = null, object[]? Args = null, ErrorType Type = ErrorType.SERVICE_ERROR)
 {
     /// <summary>
     /// Kayıt bulunamadı.

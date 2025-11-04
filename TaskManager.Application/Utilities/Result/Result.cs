@@ -8,7 +8,7 @@ public class Result
     public Error? Error { get; }
     public List<Error> Errors { get; }
 
-    public Result(Error? error = null, List<Error> errors = null)
+    public Result(Error? error = null, List<Error>? errors = null)
     {
         IsSuccess = error is null && (errors == null || !errors.Any());
         Error = error;
