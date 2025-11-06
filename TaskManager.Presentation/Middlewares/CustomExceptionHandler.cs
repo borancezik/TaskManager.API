@@ -5,11 +5,11 @@ using TaskManager.Application.Utilities.Exceptions;
 
 namespace TaskManager.Presentation.Middlewares;
 
-internal sealed class CustomExceptionHandlerr : IExceptionHandler
+internal sealed class CustomExceptionHandler : IExceptionHandler
 {
-    private readonly ILogger<CustomExceptionHandlerr> _logger;
+    private readonly ILogger<CustomExceptionHandler> _logger;
 
-    public CustomExceptionHandlerr(ILogger<CustomExceptionHandlerr> logger)
+    public CustomExceptionHandler(ILogger<CustomExceptionHandler> logger)
     {
         _logger = logger;
     }

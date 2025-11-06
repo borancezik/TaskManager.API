@@ -7,33 +7,31 @@ using TaskManager.Application.Utilities.Exceptions;
 
 namespace TaskManager.Presentation.Middlewares;
 
-public class CustomAuthorizationMiddleware
+public class CustomAuthorizationMiddleware : IMiddleware
 {
-    private readonly RequestDelegate _next;
     private readonly ITokenHelper _tokenHelper;
 
-    public CustomAuthorizationMiddleware(RequestDelegate next, ITokenHelper tokenHelper)
+    public CustomAuthorizationMiddleware(ITokenHelper tokenHelper)
     {
-        _next = next;
         _tokenHelper = tokenHelper;
     }
 
-    public async Task Invoke(HttpContext httpContext)
+    public async Task InvokeAsync(HttpContext httpContext, RequestDelegate next)
     {
         var endpoint = httpContext.GetEndpoint();
 
         if (endpoint != null)
         {
-            var hasAuhtIgnore = endpoint.Metadata.OfType<AllowAnonymousAttribute>().ToList();
+            var hasAuthIgnore = endpoint.Metadata.OfType<AllowAnonymousAttribute>().ToList();
 
-            if (!hasAuhtIgnore.Any())
+            if (!hasAuthIgnore.Any())
             {
-                var checkAuthHeaders = httpContext.Request.Headers["Authorization"].ToString();
+                var authHeader = httpContext.Request.Headers["Authorization"].ToString();
 
-                if (string.IsNullOrWhiteSpace(checkAuthHeaders))
+                if (string.IsNullOrWhiteSpace(authHeader))
                     throw new UnauthorizedException(TokenConstant.NOT_FOUND_TOKEN);
 
-                var token = httpContext.Request.Headers["Authorization"].ToString().Split(" ").Skip(1).First();
+                var token = authHeader.Split(" ").Skip(1).FirstOrDefault();
 
                 if (string.IsNullOrWhiteSpace(token))
                     throw new UnauthorizedException(TokenConstant.NOT_FOUND_TOKEN);
@@ -66,14 +64,7 @@ public class CustomAuthorizationMiddleware
             }
         }
 
-        await _next(httpContext);
+        await next(httpContext);
     }
 }
 
-public static class CustomAuthorizationMiddlewareExtension
-{
-    public static IApplicationBuilder UseCustomAuthorizationMiddleware(this IApplicationBuilder builder)
-    {
-        return builder.UseMiddleware<CustomAuthorizationMiddleware>();
-    }
-}

@@ -7,8 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
-
-builder.Services.AddExceptionHandler<CustomExceptionHandlerr>();
+builder.Services.AddMiddlewareServices();
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
