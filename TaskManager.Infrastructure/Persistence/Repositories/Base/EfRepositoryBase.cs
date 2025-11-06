@@ -53,7 +53,7 @@ public class EfRepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity 
 
     public async Task<TEntity> GetByExpressionAsync(Expression<Func<TEntity, bool>> expression)
     {
-        return await _dbSet.FirstAsync(expression);
+        return await _dbSet.FirstOrDefaultAsync(expression);
     }
 
     public async Task<IEnumerable<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> expression)

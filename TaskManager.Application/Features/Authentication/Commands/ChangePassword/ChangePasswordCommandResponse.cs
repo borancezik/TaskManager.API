@@ -1,5 +1,3 @@
 ﻿namespace TaskManager.Application.Features.Authentication.Commands.ChangePassword;
 
-public class ChangePasswordCommandResponse
-{
-}
+public sealed class ChangePasswordCommandResponse;

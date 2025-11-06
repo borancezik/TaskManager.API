@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Extensions\" />
     <Folder Include="Features\Authentication\Commands\ForgotPassword\" />
     <Folder Include="Features\Authentication\Commands\CheckRefreshToken\" />
   </ItemGroup>

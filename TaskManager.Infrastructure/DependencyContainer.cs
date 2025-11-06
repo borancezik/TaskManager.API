@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Application.Interfaces.Helpers;
 using TaskManager.Application.Interfaces.Persistence.Repositories;
 using TaskManager.Application.Interfaces.Services;
+using TaskManager.Application.Utilities.AppSettings;
 using TaskManager.Infrastructure.Helper;
 using TaskManager.Infrastructure.Persistence.Context;
 using TaskManager.Infrastructure.Persistence.Repositories;
@@ -16,6 +17,8 @@ public static class DependencyContainer
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.Configure<TaskManagerSettings>(configuration.GetSection("TaskManagerSettings"));
+
         services.AddDbContext<TaskManagerContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
@@ -24,7 +27,9 @@ public static class DependencyContainer
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         services.AddDistributedMemoryCache();
+        services.AddHttpContextAccessor();
 
+        services.AddScoped<ICurrentUserHelper, CurrentUserHelper>();
         services.AddSingleton<IPasswordHashHelper, PasswordHashHelper>();
         services.AddSingleton<ITokenHelper, TokenHelper>();
 

@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using TaskManager.Application.Mapping.Mapster;
 using TaskManager.Application.Utilities.AppSettings;
-using TaskManager.Application.Utilities.Authorization.Session;
 using TaskManager.Application.Utilities.Validation;
 
 namespace TaskManager.Application;
@@ -16,8 +15,6 @@ public static class DependencyContainer
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<TaskManagerSettings>(options => configuration.GetSection("TaskManagerSettings"));
-
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
         #region Mapster Configuration
@@ -36,8 +33,6 @@ public static class DependencyContainer
             options.Cookie.HttpOnly = true;
             options.Cookie.IsEssential = true;
         });
-
-        services.AddScoped<SessionManager>();
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

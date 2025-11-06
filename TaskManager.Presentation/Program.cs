@@ -30,9 +30,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCustomAuthorizationMiddleware();
+app.UseExceptionHandler(opt => { });
 
-app.UseExceptionHandler();
+app.UseCustomAuthorizationMiddleware();
 
 app.MapControllers();
 

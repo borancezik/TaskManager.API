@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using TaskManager.Application.Interfaces.Helpers;
-using TaskManager.Application.Utilities.Authorization.Model;
-using TaskManager.Application.Utilities.Authorization.Session;
 using TaskManager.Application.Utilities.Constants;
 using TaskManager.Application.Utilities.Exceptions;
 
@@ -20,6 +19,8 @@ public class CustomAuthorizationMiddleware : IMiddleware
     {
         var endpoint = httpContext.GetEndpoint();
 
+        var path = httpContext.Request.Path.Value;
+
         if (endpoint != null)
         {
             var hasAuthIgnore = endpoint.Metadata.OfType<AllowAnonymousAttribute>().ToList();
@@ -31,31 +32,31 @@ public class CustomAuthorizationMiddleware : IMiddleware
                 if (string.IsNullOrWhiteSpace(authHeader))
                     throw new UnauthorizedException(TokenConstant.NOT_FOUND_TOKEN);
 
-                var token = authHeader.Split(" ").Skip(1).FirstOrDefault();
+                //var token = authHeader.Split(" ").Skip(1).FirstOrDefault();
 
-                if (string.IsNullOrWhiteSpace(token))
-                    throw new UnauthorizedException(TokenConstant.NOT_FOUND_TOKEN);
+                //if (string.IsNullOrWhiteSpace(token))
+                //    throw new UnauthorizedException(TokenConstant.NOT_FOUND_TOKEN);
 
                 try
                 {
-                    var tokenModel = _tokenHelper.ValidateToken(token);
+                    var tokenModel = _tokenHelper.ValidateToken(authHeader);
 
                     if (tokenModel is null)
                         throw new UnauthorizedException(TokenConstant.INVALID_TOKEN);
 
-                    new SessionManager(httpContext)
+                    var claims = new List<Claim>
                     {
-                        LoginResult = new UserSessionModel
-                        {
-                            UserId = tokenModel.UserId,
-                            Username = tokenModel.Username,
-                            ValidTo = tokenModel.ValidTo,
-                            RefreshTokenEndDate = tokenModel.RefreshTokenEndDate,
-                            RefreshToken = tokenModel.RefreshToken
-                        },
-                        UserId = (int)tokenModel.UserId,
-                        UserName = tokenModel.Username
+                        new Claim(ClaimTypes.NameIdentifier, tokenModel.UserId.ToString()),
+                        new Claim(ClaimTypes.Name, tokenModel.Username ?? string.Empty),
+                        new Claim("ValidTo", tokenModel.ValidTo.ToString("O")),
+                        new Claim("RefreshTokenEndDate", tokenModel.RefreshTokenEndDate.ToString("O")),
+                        new Claim("RefreshToken", tokenModel.RefreshToken ?? string.Empty)
                     };
+
+                    var identity = new ClaimsIdentity(claims, "CustomAuth");
+                    var principal = new ClaimsPrincipal(identity);
+
+                    httpContext.User = principal;
                 }
                 catch (Exception)
                 {

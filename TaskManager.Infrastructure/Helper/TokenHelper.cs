@@ -13,12 +13,12 @@ namespace TaskManager.Infrastructure.Helper;
 
 public class TokenHelper(IOptions<TaskManagerSettings> appSettings) : ITokenHelper
 {
-    private readonly JwtSettings _jwtSettings = appSettings.Value.JwtSettings;
+    private readonly IOptions<TaskManagerSettings> _appSettings = appSettings;
     public string GenerateToken(Guid userId, string username, string email)
     {
-        var issuer = _jwtSettings.Issuer;
-        var audience = _jwtSettings.Audience;
-        var secretKey = _jwtSettings.Secret;
+        var issuer = _appSettings.Value.JwtSettings.Issuer;
+        var audience = _appSettings.Value.JwtSettings.Audience;
+        var secretKey = _appSettings.Value.JwtSettings.Secret;
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -36,7 +36,7 @@ public class TokenHelper(IOptions<TaskManagerSettings> appSettings) : ITokenHelp
             audience: audience,
             claims: claims,
             notBefore: DateTime.UtcNow,
-            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
+            expires: DateTime.UtcNow.AddMinutes(_appSettings.Value.JwtSettings.ExpiryMinutes),
             signingCredentials: credentials
         );
 
