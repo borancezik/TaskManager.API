@@ -27,19 +27,14 @@ public class CustomAuthorizationMiddleware : IMiddleware
 
             if (!hasAuthIgnore.Any())
             {
-                var authHeader = httpContext.Request.Headers["Authorization"].ToString();
+                var token = httpContext.Request.Headers["Authorization"].ToString();
 
-                if (string.IsNullOrWhiteSpace(authHeader))
+                if (string.IsNullOrWhiteSpace(token))
                     throw new UnauthorizedException(TokenConstant.NOT_FOUND_TOKEN);
-
-                //var token = authHeader.Split(" ").Skip(1).FirstOrDefault();
-
-                //if (string.IsNullOrWhiteSpace(token))
-                //    throw new UnauthorizedException(TokenConstant.NOT_FOUND_TOKEN);
 
                 try
                 {
-                    var tokenModel = _tokenHelper.ValidateToken(authHeader);
+                    var tokenModel = _tokenHelper.ValidateToken(token);
 
                     if (tokenModel is null)
                         throw new UnauthorizedException(TokenConstant.INVALID_TOKEN);

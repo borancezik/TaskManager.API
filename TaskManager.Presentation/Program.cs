@@ -1,7 +1,7 @@
 using Scalar.AspNetCore;
 using TaskManager.Application;
 using TaskManager.Infrastructure;
-using TaskManager.Presentation.Middlewares;
+using TaskManager.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 

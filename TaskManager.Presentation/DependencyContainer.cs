@@ -1,4 +1,6 @@
-﻿namespace TaskManager.Presentation.Middlewares;
+﻿using TaskManager.Presentation.Middlewares;
+
+namespace TaskManager.Presentation;
 
 public static class DependencyContainer
 {

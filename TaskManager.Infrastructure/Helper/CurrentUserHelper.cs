@@ -17,13 +17,13 @@ public class CurrentUserHelper(IHttpContextAccessor httpContextAccessor) : ICurr
             var claim = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             return Guid.TryParse(claim, out var userId) ? userId : Guid.Empty;
         }
-        set { /* boş bırakıldı, dışarıdan set edilmeyecek */ }
+        set {}
     }
 
     public string Username
     {
         get => User?.FindFirst(ClaimTypes.Name)?.Value;
-        set { /* boş bırakıldı */ }
+        set {}
     }
 
     public DateTime ValidFrom
@@ -33,7 +33,7 @@ public class CurrentUserHelper(IHttpContextAccessor httpContextAccessor) : ICurr
             var claim = User?.FindFirst("ValidFrom")?.Value;
             return DateTime.TryParse(claim, out var date) ? date : DateTime.MinValue;
         }
-        set { }
+        set {}
     }
 
     public DateTime ValidTo
@@ -43,7 +43,7 @@ public class CurrentUserHelper(IHttpContextAccessor httpContextAccessor) : ICurr
             var claim = User?.FindFirst("ValidTo")?.Value;
             return DateTime.TryParse(claim, out var date) ? date : DateTime.MinValue;
         }
-        set { }
+        set {}
     }
 
     public DateTime RefreshTokenEndDate
@@ -53,12 +53,12 @@ public class CurrentUserHelper(IHttpContextAccessor httpContextAccessor) : ICurr
             var claim = User?.FindFirst("RefreshTokenEndDate")?.Value;
             return DateTime.TryParse(claim, out var date) ? date : DateTime.MinValue;
         }
-        set { }
+        set {}
     }
 
     public string RefreshToken
     {
         get => User?.FindFirst("RefreshToken")?.Value;
-        set { }
+        set {}
     }
 }
