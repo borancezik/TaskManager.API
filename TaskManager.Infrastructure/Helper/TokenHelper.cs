@@ -23,12 +23,18 @@ public class TokenHelper(IOptions<TaskManagerSettings> appSettings) : ITokenHelp
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+        var validTo = DateTime.UtcNow.AddMinutes(_appSettings.Value.JwtSettings.ExpiryMinutes);
+        var refreshTokenEndDate = DateTime.UtcNow.AddDays(_appSettings.Value.JwtSettings.RefreshTokenExpiryDays);
+        var refreshToken = Guid.NewGuid().ToString();
+
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-            new Claim(JwtRegisteredClaimNames.UniqueName, username),
-            new Claim(JwtRegisteredClaimNames.Email, email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim("UserId", userId.ToString()),
+            new Claim("UserName", username),
+            new Claim("Email", email),
+            new Claim("ValidTo", validTo.ToString("O")), // "O" = ISO 8601 format
+            new Claim("RefreshTokenEndDate", refreshTokenEndDate.ToString("O")),
+            new Claim("RefreshToken", refreshToken)
         };
 
         var token = new JwtSecurityToken(
