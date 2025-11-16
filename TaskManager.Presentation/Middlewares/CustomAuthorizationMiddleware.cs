@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using TaskManager.Application.Interfaces.Helpers;
 using TaskManager.Application.Utilities.Constants;
+using TaskManager.Application.Utilities.Errors.ServiceErrors;
 using TaskManager.Application.Utilities.Exceptions;
 
 namespace TaskManager.Presentation.Middlewares;
@@ -30,14 +31,14 @@ public class CustomAuthorizationMiddleware : IMiddleware
                 var token = httpContext.Request.Headers["Authorization"].ToString();
 
                 if (string.IsNullOrWhiteSpace(token))
-                    throw new UnauthorizedException(TokenConstant.NOT_FOUND_TOKEN);
+                    throw new UnauthorizedException(AuthenticationErrors.NotFoundToken.ToString());
 
                 try
                 {
                     var tokenModel = _tokenHelper.ValidateToken(token);
 
                     if (tokenModel is null)
-                        throw new UnauthorizedException(TokenConstant.INVALID_TOKEN);
+                        throw new UnauthorizedException(AuthenticationErrors.InvalidToken.ToString());
 
                     var claims = new List<Claim>
                     {
@@ -55,7 +56,7 @@ public class CustomAuthorizationMiddleware : IMiddleware
                 }
                 catch (Exception)
                 {
-                    throw new UnauthorizedException(TokenConstant.NOT_FOUND_TOKEN);
+                    throw new UnauthorizedException(AuthenticationErrors.NotFoundToken.ToString());
                 }
             }
         }

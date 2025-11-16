@@ -5,6 +5,6 @@ namespace TaskManager.Application.Interfaces.Helpers;
 
 public interface ITokenHelper
 {
-    string GenerateToken(Guid userId, string username, string email);
+    string GenerateToken(TokenModel tokenModel);
     TokenModel ValidateToken(string token);
 }

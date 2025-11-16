@@ -7,6 +7,7 @@ using TaskManager.Application.Interfaces.Helpers;
 using TaskManager.Application.Utilities.AppSettings;
 using TaskManager.Application.Utilities.Authorization.Model;
 using TaskManager.Application.Utilities.Constants;
+using TaskManager.Application.Utilities.Errors.ServiceErrors;
 using TaskManager.Application.Utilities.Exceptions;
 
 namespace TaskManager.Infrastructure.Helper;
@@ -14,7 +15,7 @@ namespace TaskManager.Infrastructure.Helper;
 public class TokenHelper(IOptions<TaskManagerSettings> appSettings) : ITokenHelper
 {
     private readonly IOptions<TaskManagerSettings> _appSettings = appSettings;
-    public string GenerateToken(Guid userId, string username, string email)
+    public string GenerateToken(TokenModel tokenModel)
     {
         var issuer = _appSettings.Value.JwtSettings.Issuer;
         var audience = _appSettings.Value.JwtSettings.Audience;
@@ -23,18 +24,14 @@ public class TokenHelper(IOptions<TaskManagerSettings> appSettings) : ITokenHelp
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        var validTo = DateTime.UtcNow.AddMinutes(_appSettings.Value.JwtSettings.ExpiryMinutes);
-        var refreshTokenEndDate = DateTime.UtcNow.AddDays(_appSettings.Value.JwtSettings.RefreshTokenExpiryDays);
-        var refreshToken = Guid.NewGuid().ToString();
-
         var claims = new List<Claim>
         {
-            new Claim("UserId", userId.ToString()),
-            new Claim("UserName", username),
-            new Claim("Email", email),
-            new Claim("ValidTo", validTo.ToString("O")), // "O" = ISO 8601 format
-            new Claim("RefreshTokenEndDate", refreshTokenEndDate.ToString("O")),
-            new Claim("RefreshToken", refreshToken)
+            new Claim("UserId", tokenModel.UserId.ToString()),
+            new Claim("UserName", tokenModel.Username),
+            new Claim("Email", tokenModel.Email),
+            new Claim("ValidTo", tokenModel.ValidTo.ToString("O")),
+            new Claim("RefreshTokenEndDate", tokenModel.RefreshTokenEndDate.ToString("O")),
+            new Claim("RefreshToken", tokenModel.RefreshToken)
         };
 
         var token = new JwtSecurityToken(
@@ -58,7 +55,7 @@ public class TokenHelper(IOptions<TaskManagerSettings> appSettings) : ITokenHelp
 
             var personnel = new TokenModel
             {
-                UserId = long.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "UserId").Value),
+                UserId = Guid.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "UserId").Value),
                 Username = jwtSecurityToken.Claims.First(claim => claim.Type == "UserName").Value,
                 ValidTo = Convert.ToDateTime(jwtSecurityToken.Claims.First(claim => claim.Type == "ValidTo").Value),
                 RefreshTokenEndDate = Convert.ToDateTime(jwtSecurityToken.Claims.First(claim => claim.Type == "RefreshTokenEndDate").Value),
@@ -67,14 +64,14 @@ public class TokenHelper(IOptions<TaskManagerSettings> appSettings) : ITokenHelp
 
             if (personnel.ValidTo < DateTime.Now)
             {
-                throw new UnauthorizedException(TokenConstant.EXPIRED_TOKEN);
+                throw new UnauthorizedException(AuthenticationErrors.ExpiredToken.ToString());
             }
 
             return personnel;
         }
         catch
         {
-            throw new UnauthorizedException(TokenConstant.INVALID_TOKEN);
+            throw new UnauthorizedException(AuthenticationErrors.InvalidToken.ToString());
         }
     }
 }

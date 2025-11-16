@@ -1,10 +1,8 @@
 ﻿namespace TaskManager.Application.Utilities.Constants;
 
-public class TokenConstant
+public static class TokenConstant
 {
-    public const string EXPIRED_TOKEN = "Token zaman aşımına uğramıştır.";
+    public const int VALID_TO_END_MINUTE = 90;
 
-    public const string INVALID_TOKEN = "Token geçerli değildir.";
-
-    public const string NOT_FOUND_TOKEN = "Token bulunamadı.";
+    public const int REFRESH_TOKEN_END_MINUTE = 480;
 }
