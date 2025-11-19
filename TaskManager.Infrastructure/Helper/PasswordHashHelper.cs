@@ -7,14 +7,9 @@ namespace TaskManager.Infrastructure.Helper;
 public class PasswordHashHelper : IPasswordHashHelper
 {
     private const int SaltSize = 16;   // 128 bit salt
-    private const int HashSize = 32;   // 256 bit SHA3_256 output
     private const int MinIterations = 50_000;
-    private const int MaxIterations = 150_000; // inclusive upper bound handled below
+    private const int MaxIterations = 150_000;
 
-    /// <summary>
-    /// Yeni salt üretir, rastgele iterations seçer (50k..150k) ve hash oluşturur.
-    /// Dönen tuple: (HashHex, SaltHex, Iterations)
-    /// </summary>
     public (string Hash, string Salt, int Iterations) CreateHash(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
@@ -33,9 +28,6 @@ public class PasswordHashHelper : IPasswordHashHelper
         );
     }
 
-    /// <summary>
-    /// Verilen password ile stored hash'i iterations kullanarak doğrular.
-    /// </summary>
     public bool VerifyPassword(string password, string storedHash, string storedSalt, int storedIterations)
     {
         if (string.IsNullOrWhiteSpace(password))
