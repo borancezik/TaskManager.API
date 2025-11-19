@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using TaskManager.Application.Interfaces.Helpers;
-using TaskManager.Application.Utilities.Constants;
 using TaskManager.Application.Utilities.Errors.ServiceErrors;
 using TaskManager.Application.Utilities.Exceptions;
 
