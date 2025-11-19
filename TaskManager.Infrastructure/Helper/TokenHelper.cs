@@ -39,7 +39,7 @@ public class TokenHelper(IOptions<TaskManagerSettings> appSettings) : ITokenHelp
             audience: audience,
             claims: claims,
             notBefore: DateTime.UtcNow,
-            expires: DateTime.UtcNow.AddMinutes(_appSettings.Value.JwtSettings.ExpiryMinutes),
+            expires: DateTime.UtcNow.AddMinutes(TokenConstant.REFRESH_TOKEN_END_MINUTE),
             signingCredentials: credentials
         );
 
